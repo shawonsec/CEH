@@ -1,0 +1,252 @@
+#!/bin/bash
+
+# ANSI escape codes for colored text
+Red="\033[31m"
+Green="\033[32m"
+Blue="\033[34m"
+Reset="\033[0m"
+
+# Function to display the main menu
+display_main_menu() {
+    echo -e "\n${Green}====================="
+    echo -e "|       Main Menu       |"
+    echo -e "=====================${Reset}"
+    echo -e "${Blue}1) DNS"
+    echo -e "2) HTTP Requests"
+    echo -e "3) Subdomain Enumeration"
+    echo -e "4) Content Discovery"
+    echo -e "5) Exit${Reset}"
+    echo -n "Choose an option (1-5): "
+}
+
+# Function to display the subdomain enumeration menu
+display_subdomain_menu() {
+    echo -e "\n${Green}==========================="
+    echo -e "|   Subdomain Enumeration   |"
+    echo -e "===========================${Reset}"
+    echo -e "${Blue}1) SSL/TLS"
+    echo -e "2) DNS Bruteforce"
+    echo -e "3) Google Dork"
+    echo -e "4) Sublist3r"
+    echo -e "5) Virtual Hosts"
+    echo -e "6) Back to Main Menu${Reset}"
+    echo -n "Choose an option (1-6): "
+}
+
+# Function to explain subdomain enumeration and related tools
+explain_subdomain() {
+    case $1 in
+        1)
+            echo -e ""
+            echo -e "\n${Red}SSL/TLS Certificates"
+            echo -e "=====================${Reset}"
+            echo "SSL/TLS certificates are publicly recorded in Certificate Transparency logs."
+            echo "Tools like crt.sh and CT Search can be used to find SSL/TLS certificates for domains."
+            echo "Example: Search for tryhackme.com on crt.sh to find certificates."
+            echo -e ""
+            ;;
+        2)
+            echo -e ""
+            echo -e "\n${Red}DNS Bruteforce"
+            echo -e "=================${Reset}"
+            echo "DNS Bruteforce involves using wordlists to find subdomains."
+            echo "Tool: 'dnsrecon' can perform DNS enumeration and bruteforce."
+            echo "Example: 'dnsrecon -d example.com -D wordlist.txt -t brt'"
+            echo -e ""
+            ;;
+        3)
+            echo -e ""
+            echo -e "\n${Red}Google Dorking"
+            echo -e "=================${Reset}"
+            echo "Google Dorking uses specific search queries to find information or subdomains."
+            echo "Example: 'site:example.com -www' finds subdomains other than the main website."
+            echo -e ""
+            ;;
+        4)
+            echo -e ""
+            echo -e "\n${Red}Sublist3r"
+            echo -e "=================${Reset}"
+            echo "Sublist3r is a popular tool for subdomain enumeration."
+            echo "Example: 'sublist3r -d example.com'"
+            echo -e ""
+            ;;
+        5)
+            echo -e ""
+            echo -e "\n${Red}Virtual Hosts"
+            echo -e "=================${Reset}"
+            echo "Tools like 'ffuf' can be used to enumerate virtual hosts."
+            echo "Example: 'ffuf -w wordlist.txt -u http://example.com -H \"Host: FUZZ.example.com\"'"
+            echo -e ""
+            ;;
+    esac
+}
+
+# Function to display the content discovery menu
+display_content_discovery_menu() {
+    echo -e "\n${Green}==========================="
+    echo -e "|    Content Discovery      |"
+    echo -e "===========================${Reset}"
+    echo -e "${Blue}1) robots.txt"
+    echo -e "2) sitemap.xml"
+    echo -e "3) Favicon"
+    echo -e "4) HTTP Headers"
+    echo -e "5) Framework Stack"
+    echo -e "6) Wappalyzer"
+    echo -e "7) Wayback Machine"
+    echo -e "8) GitHub"
+    echo -e "9) Automated Discovery"
+    echo -e "10) Back to Main Menu${Reset}"
+    echo -n "Choose an option (1-10): "
+}
+
+# Function to explain content discovery and related tools
+explain_content_discovery() {
+    case $1 in
+        1)
+            echo -e ""
+            echo -e "\n${Red}robots.txt"
+            echo -e "==================${Reset}"
+            echo "The robots.txt file provides instructions for search engine crawlers."
+            echo "It may contain paths disallowed for crawling, useful for reconnaissance."
+            echo "Tools like 'curl' can retrieve the robots.txt file."
+            echo "Example: 'curl http://example.com/robots.txt'"
+            echo -e ""
+            ;;
+        2)
+            echo -e ""
+            echo -e "\n${Red}sitemap.xml"
+            echo -e "===================${Reset}"
+            echo "The sitemap.xml file lists all pages on a website for search engines."
+            echo "Tools like 'curl' can fetch the sitemap.xml to explore site structure."
+            echo "Example: 'curl http://example.com/sitemap.xml'"
+            echo -e ""
+            ;;
+        3)
+            echo -e ""
+            echo -e "\n${Red}Favicon"
+            echo -e "=================${Reset}"
+            echo "The favicon is a small icon associated with a website."
+            echo "The source of the favicon may hint at underlying technologies."
+            echo "Example: 'curl -O http://example.com/favicon.ico'"
+            echo -e ""
+            ;;
+        4)
+            echo -e ""
+            echo -e "\n${Red}HTTP Headers"
+            echo -e "==================${Reset}"
+            echo "HTTP headers contain metadata sent with HTTP requests/responses."
+            echo "Tools like 'curl' can retrieve headers."
+            echo "Example: 'curl -I http://example.com/'"
+            echo -e ""
+            ;;
+        5)
+            echo -e ""
+            echo -e "\n${Red}Framework Stack"
+            echo -e "==================${Reset}"
+            echo "Framework stacks refer to the underlying technologies used on a website."
+            echo "Tools like 'Wappalyzer' can identify frameworks."
+            echo -e ""
+            ;;
+        6)
+            echo -e ""
+            echo -e "\n${Red}Wappalyzer"
+            echo -e "==================${Reset}"
+            echo "Wappalyzer is a tool that identifies technologies used on websites."
+            echo "It has a browser extension and a command-line tool."
+            echo -e ""
+            ;;
+        7)
+            echo -e ""
+            echo -e "\n${Red}Wayback Machine"
+            echo -e "==================${Reset}"
+            echo "The Wayback Machine is a service that archives websites."
+            echo "It can be used to find older versions of web content."
+            echo "Example: 'https://web.archive.org/web/*/example.com'"
+            echo -e ""
+            ;;
+        8)
+            echo -e ""
+            echo -e "\n${Red}GitHub"
+            echo -e "==================${Reset}"
+            echo "GitHub is a platform for hosting and sharing code repositories."
+            echo "It can be useful for finding open-source code and documentation."
+            echo "Example: 'github.com/search?q=example+in%3Aname'"
+            echo -e ""
+            ;;
+        9)
+            echo -e ""
+            echo -e "\n${Red}Automated Discovery Tools"
+            echo -e "=============================${Reset}"
+            echo "Automated tools like 'dirsearch', 'gobuster', 'wfuzz', etc., can find hidden content on websites."
+            echo "Example: 'dirsearch -u http://example.com -w wordlist.txt'"
+            echo -e ""
+            ;;
+    esac
+}
+
+# Main loop to keep the program running
+while true; do
+    display_main_menu
+    read -r option
+    
+    case $option in
+        1)
+            echo -e ""
+            echo -e "\n${Red}DNS Information"
+            echo -e "==================${Reset}"
+            echo "To gather DNS information, you can use 'nslookup' or 'dig'."
+            echo "Example: 'nslookup google.com'"
+            echo -e ""
+            ;;
+        2)
+            echo -e ""
+            echo -e "\n${Red}HTTP Requests"
+            echo -e "=================${Reset}"
+            echo "To send HTTP requests in shell scripts, use 'curl' or 'wget'."
+            echo "Example: 'curl https://example.com'"
+            echo -e ""
+            ;;
+        3)
+            # Loop to handle the subdomain enumeration menu
+            while true; do
+                display_subdomain_menu
+                read -r sub_option
+                
+                if [ "$sub_option" == "6" ]; then
+                    break # Return to the main menu
+                fi
+                
+                explain_subdomain "$sub_option"
+                
+                echo -n "Press Enter to return to the Subdomain Enumeration menu: "
+                read
+            done
+            ;;
+        4)
+            # Loop to handle the content discovery menu
+            while true; do
+                display_content_discovery_menu
+                read -r content_option
+                
+                if [ "$content_option" == "10" ]; then
+                    break # Return to the main menu
+                fi
+                
+                explain_content_discovery "$content_option"
+                
+                echo -n "Press Enter to return to the Content Discovery menu: "
+                read
+            done
+            ;;
+        5)
+            echo "Exiting the program. Thank you!"
+            exit 0
+            ;;
+        *)
+            echo -e "\n${Red}Invalid option, please choose 1-5.${Reset}"
+            ;;
+    esac
+    
+    echo -n "Press Enter to return to the main menu: "
+    read
+done
