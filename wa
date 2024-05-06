@@ -1,0 +1,98 @@
+#!/bin/bash
+
+# Define ANSI color codes for formatting
+RESET='\033[0m'
+RED='\033[0;31m'
+GREEN='\033[0;32m'
+YELLOW='\033[0;33m'
+BLUE='\033[0;34m'
+MAGENTA='\033[0;35m'
+CYAN='\033[0;36m'
+WHITE='\033[0;37m'
+
+# Function to display the main categories with colored output
+display_main_categories() {
+    echo -e "${CYAN}=============================="
+    echo -e "Select a category to explore:"
+    echo -e "1) ${YELLOW}DNS${CYAN}"
+    echo -e "2) ${YELLOW}HTTP Requests${CYAN}"
+    echo -e "3) ${YELLOW}Subdomain Enumeration${CYAN}"
+    echo -e "4) ${YELLOW}Content Discovery${CYAN}"
+    echo -e "5) ${YELLOW}Exit${CYAN}"
+    echo -e "==============================${RESET}"
+}
+
+# Function to display DNS enumeration information
+dns_enumeration() {
+    echo -e "${GREEN}DNS Enumeration with nslookup:${RESET}"
+    echo -e "Common commands to use with nslookup:"
+    echo -e "1) Basic domain information: ${MAGENTA}nslookup example.com${RESET}"
+    echo -e "2) Find an IP address for a domain: ${MAGENTA}nslookup -type=A example.com${RESET}"
+    echo -e "3) Find Mail Exchange (MX) records: ${MAGENTA}nslookup -type=MX example.com${RESET}"
+    echo -e "4) Find Name Server (NS) records: ${MAGENTA}nslookup -type=NS example.com${RESET}"
+    echo -e "5) Reverse DNS lookup: ${MAGENTA}nslookup 8.8.8.8${RESET}"
+    echo ""
+}
+
+# Function to display Content Discovery subcategories
+content_discovery() {
+    echo -e "${BLUE}Content Discovery Subcategories:${RESET}"
+    echo -e "1) robots.txt"
+    echo -e "2) favicon"
+    echo -e "3) sitemap.xml"
+    echo -e "4) HTTP headers"
+    echo -e "5) Framework stack"
+    echo -e "6) Google Dorking"
+    echo -e "7) Wappalyzer"
+    echo -e "8) Wayback Machine"
+    echo -e "9) GitHub"
+    echo -e "10) S3 Buckets"
+    echo -e "11) Automated discovery"
+    echo ""
+}
+
+# Function to display Subdomain Enumeration subcategories
+subdomain_enumeration() {
+    echo -e "${RED}Subdomain Enumeration Subcategories:${RESET}"
+    echo -e "1) SSL/TLS"
+    echo -e "2) DNS Bruteforce"
+    echo -e "3) Google Dork"
+    echo -e "4) Sublist3r"
+    echo -e "5) Virtual Hosts"
+    echo ""
+}
+
+# Main loop to keep displaying the main categories
+while true; do
+    # Display the main categories with color
+    display_main_categories
+
+    # Prompt user to select a category
+    read -p "Enter your choice (1-5): " choice
+
+    # Handle the user's choice and display the appropriate content
+    case $choice in
+        1) 
+            dns_enumeration
+            ;;
+        2) 
+            echo -e "${YELLOW}HTTP Requests involves various topics. Further exploration may require specialized tools or scripts.${RESET}"
+            ;;
+        3) 
+            subdomain_enumeration
+            ;;
+        4) 
+            content_discovery
+            ;;
+        5) 
+            echo -e "${RED}Exiting...${RESET}"
+            exit 0
+            ;;
+        *)
+            echo -e "${RED}Invalid choice. Please enter a number between 1 and 5.${RESET}"
+            ;;
+    esac
+
+    # Prompt user to press Enter to return to the main menu
+    read -p "Press Enter to return to the main menu..."  # Keeps the loop going
+done
